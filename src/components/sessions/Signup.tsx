@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import * as yup from "yup";
 import Box from "../Box";
 import Button from "../buttons/Button";
@@ -15,7 +16,7 @@ import { StyledSessionCard } from "./SessionStyle";
 
 const Signup: React.FC = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
-
+  const router = useRouter();
   const togglePasswordVisibility = () => {
     setPasswordVisibility((visible) => !visible);
   };
@@ -37,6 +38,9 @@ const Signup: React.FC = () => {
       console.log(data);
       if (data.acknowledged == false) {
         errors.email = "invalid email already exists";
+      }
+      if (data.acknowledged == true) {
+        router.push("/");
       }
     } catch (err) {
       console.log(err);
