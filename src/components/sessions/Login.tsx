@@ -12,6 +12,7 @@ import Icon from "../icon/Icon";
 import TextField from "../text-field/TextField";
 import { H3, H5, H6, SemiSpan, Small, Span } from "../Typography";
 import { StyledSessionCard } from "./SessionStyle";
+import axios from "axios";
 
 const Login: React.FC = () => {
   const [passwordVisibility, setPasswordVisibility] = useState(false);
@@ -22,26 +23,17 @@ const Login: React.FC = () => {
   }, []);
 
   const handleFormSubmit = async (values) => {
-    try {
-      const res = await fetch("/api/loginuser", {
-        method: "POST",
-        body: JSON.stringify({
-          username: values.email,
-          password: values.password,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      });
-      const data = await res.json();
-      console.log(data);
-      if (data.message == true) {
-        router.push("/profile");
-      } else {
-        errors.email = "username and password do not match";
-      }
-    } catch (err) {
-      console.log(err);
+    const body = {
+      username: values.email,
+      password: values.password,
+    };
+    const data = await axios.post("/api/loginuser", body);
+    console.log(data.data.message);
+    if (data.data.message == "Success!") {
+      console.log("FUCK YTOU");
+      router.push("/profile");
+    } else {
+      errors.email = "username and password do not match";
     }
   };
 

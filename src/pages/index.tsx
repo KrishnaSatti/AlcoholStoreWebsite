@@ -15,6 +15,8 @@ import GroceryLayout from "@component/layout/GroceryLayout";
 import { debounce } from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 
+const jwt = "hello!";
+
 const Home2 = () => {
   const [isSidenavFixed, setSidenavFixed] = useState(false);
 

@@ -50,7 +50,7 @@ async function monogoProducts(request) {
   return data;
 }
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function (req, res) {
   console.log(req.body.username);
   const data = await monogoProducts(req.body);
   res.json(data);

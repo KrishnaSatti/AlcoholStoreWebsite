@@ -3,7 +3,7 @@ import GrocerySearchBox from "@component/search-box/GrocerySearchBox";
 import { Tiny } from "@component/Typography";
 import { useAppContext } from "@context/app/AppContext";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "../Box";
 import Container from "../Container";
 import FlexBox from "../FlexBox";
@@ -13,6 +13,7 @@ import Login from "../sessions/Login";
 import Sidenav from "../sidenav/Sidenav";
 import StyledHeader from "./HeaderStyle";
 import UserLoginDialog from "./UserLoginDialog";
+import axios from "axios";
 
 type HeaderProps = {
   isFixed?: boolean;
@@ -21,10 +22,24 @@ type HeaderProps = {
 
 const GroceryHeader: React.FC<HeaderProps> = ({ className }) => {
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState(null);
   const toggleSidenav = () => setOpen(!open);
 
   const { state } = useAppContext();
   const { cartList } = state.cart;
+
+  useEffect(() => {
+    const namefunction = async () => {
+      const name = await axios.get("/api/navbarName");
+      console.log(name);
+      if (name.data.message == "invalid token") {
+        setData("Sign In");
+      } else {
+        setData(name.data.name);
+      }
+    };
+    namefunction();
+  }, []);
 
   const cartHandle = (
     <FlexBox ml="20px" alignItems="flex-start">
@@ -72,6 +87,7 @@ const GroceryHeader: React.FC<HeaderProps> = ({ className }) => {
         </FlexBox>
 
         <FlexBox className="header-right" alignItems="center">
+          {data}
           <UserLoginDialog
             handle={
               <IconButton ml="1rem" bg="gray.200" p="8px">
