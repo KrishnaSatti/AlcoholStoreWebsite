@@ -4,6 +4,7 @@ import { Tiny } from "@component/Typography";
 import { useAppContext } from "@context/app/AppContext";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Box from "../Box";
 import Container from "../Container";
 import FlexBox from "../FlexBox";
@@ -24,6 +25,8 @@ const GroceryHeader: React.FC<HeaderProps> = ({ className }) => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState(null);
   const toggleSidenav = () => setOpen(!open);
+  const [loggedin, setLoginState] = useState(null);
+  const router = useRouter();
 
   const { state } = useAppContext();
   const { cartList } = state.cart;
@@ -34,12 +37,40 @@ const GroceryHeader: React.FC<HeaderProps> = ({ className }) => {
       console.log(name);
       if (name.data.message == "invalid token") {
         setData("Sign In");
+        setLoginState(false);
       } else {
         setData(name.data.name);
+        setLoginState(true);
       }
     };
     namefunction();
   }, []);
+
+  const profileRoute = () => {
+    if (loggedin == false) {
+      return (
+        <UserLoginDialog
+          handle={
+            <IconButton ml="1rem" bg="gray.200" p="8px">
+              <Icon size="28px">user</Icon>
+            </IconButton>
+          }
+        >
+          <Box>
+            <Login />
+          </Box>
+        </UserLoginDialog>
+      );
+    } else {
+      return (
+        <Link href="/profile">
+          <IconButton ml="1rem" bg="gray.200" p="8px">
+            <Icon size="28px">user</Icon>
+          </IconButton>
+        </Link>
+      );
+    }
+  };
 
   const cartHandle = (
     <FlexBox ml="20px" alignItems="flex-start">
@@ -88,17 +119,7 @@ const GroceryHeader: React.FC<HeaderProps> = ({ className }) => {
 
         <FlexBox className="header-right" alignItems="center">
           {data}
-          <UserLoginDialog
-            handle={
-              <IconButton ml="1rem" bg="gray.200" p="8px">
-                <Icon size="28px">user</Icon>
-              </IconButton>
-            }
-          >
-            <Box>
-              <Login />
-            </Box>
-          </UserLoginDialog>
+          {profileRoute()}
 
           <Sidenav
             handle={cartHandle}

@@ -3,7 +3,6 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import * as yup from "yup";
-import "yup-phone";
 import Box from "../Box";
 import Button from "../buttons/Button";
 import IconButton from "../buttons/IconButton";
@@ -35,14 +34,7 @@ const Signup: React.FC = () => {
       errors.email = "invalid email already exists";
     }
     if (data.data.acknowledged == true) {
-      router.push({
-        pathname: "/verify",
-        query: {
-          username: body.username,
-          password: data.data.password,
-          name: body.name,
-        },
-      });
+      router.push("/");
     }
   };
 
@@ -57,7 +49,7 @@ const Signup: React.FC = () => {
     <StyledSessionCard mx="auto" my="2rem" boxShadow="large">
       <form className="content" onSubmit={handleSubmit}>
         <H3 textAlign="center" mb="0.5rem">
-          Create Your Account
+          Verify Phone Number
         </H3>
         <H5
           fontWeight="600"
@@ -232,10 +224,7 @@ const initialValues = {
 
 const formSchema = yup.object().shape({
   name: yup.string().required("${path} is required"),
-  email: yup
-    .string()
-    .phone("invalid phone number")
-    .required("${path} is required"),
+  email: yup.string().email("invalid email").required("${path} is required"),
   password: yup.string().required("${path} is required"),
   re_password: yup
     .string()

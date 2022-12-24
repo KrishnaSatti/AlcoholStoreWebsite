@@ -40,8 +40,8 @@ async function monogoProducts(request) {
         password: hashedpass,
         name: request.name,
       };
-      const status = await collection.insertOne(doc);
-      data = status;
+      //const status = await collection.insertOne(doc);
+      data = { acknowledged: true, insertedId: "null", password: hashedpass };
     }
   } finally {
     await client.close();

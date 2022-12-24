@@ -30,7 +30,6 @@ const Login: React.FC = () => {
     const data = await axios.post("/api/loginuser", body);
     console.log(data.data.message);
     if (data.data.message == "Success!") {
-      console.log("FUCK YTOU");
       router.push("/profile");
     } else {
       errors.email = "username and password do not match";

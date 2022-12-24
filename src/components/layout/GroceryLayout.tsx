@@ -11,6 +11,8 @@ type Props = {
   navbar?: React.ReactChild;
 };
 
+//In between div classname = section after stick there was <NavBar2> in case I ever want to retract
+
 const GroceryLayout: React.FC<Props> = ({
   children,
   title = "React Next.js Ecommerce Template",
@@ -26,9 +28,7 @@ const GroceryLayout: React.FC<Props> = ({
       <GroceryHeader />
     </Sticky>
 
-    <div className="section-after-sticky">
-      <Navbar2 />
-    </div>
+    <div className="section-after-sticky"></div>
 
     {children}
 
