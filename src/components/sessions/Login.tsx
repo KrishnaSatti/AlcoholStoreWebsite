@@ -22,8 +22,27 @@ const Login: React.FC = () => {
   }, []);
 
   const handleFormSubmit = async (values) => {
-    router.push("/profile");
-    console.log(values);
+    try {
+      const res = await fetch("/api/loginuser", {
+        method: "POST",
+        body: JSON.stringify({
+          username: values.email,
+          password: values.password,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.message == true) {
+        router.push("/profile");
+      } else {
+        errors.email = "username and password do not match";
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
